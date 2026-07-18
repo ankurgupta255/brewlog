@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.db
+*.log
+nohup.out
+# local field notes contain instance credentials
+NOTES.md
+blog-draft.md
+.DS_Store
