@@ -1,6 +1,6 @@
 # Every container was "healthy". My traces went nowhere.
 
-I self-hosted SigNoz for the Agents of SigNoz hackathon expecting a boring
+I self-hosted SigNoz for the [Agents of SigNoz hackathon](https://www.wemakedevs.org/hackathons/signoz) expecting a boring
 docker-compose afternoon. Instead I learned that SigNoz's ingest ports don't
 open until you create a user account, that the install path every tutorial
 describes no longer exists, and that a histogram will happily tell you every
@@ -122,7 +122,7 @@ That ships every ordinary `logging` call as an OTel log record, stamped with
 the active trace and span IDs. No structured logging library, no JSON
 formatter, nothing.
 
-![Services list showing brew-machine at 7.65% error rate](shots/services.png)
+![Services list showing brew-machine at 7.65% error rate](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/services.png)
 
 ## The feature I keep coming back to: one click from a 502 to the log line
 
@@ -134,7 +134,7 @@ request crossing from `brewlog-api` into `brew-machine`, and at the bottom a
 short red `extract` span where the machine jammed. The 500 bubbles up to the
 api's outer span as a 502.
 
-![Flame graph of a failed order, red extract span across two services](shots/trace-error-detail.png)
+![Flame graph of a failed order, red extract span across two services](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/trace-error-detail.png)
 
 From that red span, "related logs" lands me on the exact
 `machine jammed while brewing espresso` line, because the trace and span IDs
@@ -150,7 +150,7 @@ reliably. The notification channel is a webhook pointing back at the demo app
 itself, which logs the alert, which ships to SigNoz as a log. My observability
 stack now complains about my coffee machine, to my coffee machine.
 
-![Triggered alert firing](shots/alerts-triggered.png)
+![Triggered alert firing](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/alerts-triggered.png)
 
 ## Two more things that bit me
 
@@ -162,7 +162,7 @@ into the (0, 5] bucket and quantile interpolation invents ~4.95s. The fix is
 dashboard still shows the moment the fix deployed, a flat 4.95s line bending
 down to reality, with pour_over settling at its true ~1.4s.
 
-![p99 by drink, before and after fixing bucket boundaries](shots/dashboard-brewlog-final.png)
+![p99 by drink, before and after fixing bucket boundaries](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/dashboard-brewlog-final.png)
 
 **The p99 query didn't error politely, it didn't work at all at first.**
 ClickHouse said `Function with name 'histogramQuantile' does not exist`.

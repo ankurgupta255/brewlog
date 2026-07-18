@@ -2,7 +2,8 @@
 
 A deliberately chaotic coffee-shop API used to explore self-hosted
 [SigNoz](https://signoz.io) for the Agents of SigNoz hackathon (July 2026).
-Full write-up: see `blog-final.md` (published on Dev.to).
+Full write-up: see [`blog-final.md`](blog-final.md) (published on Dev.to).
+The two Foundry bugs found along the way: [SigNoz/foundry#161](https://github.com/SigNoz/foundry/issues/161).
 
 Two FastAPI services from one file:
 
