@@ -172,7 +172,7 @@ glob is `*function.yaml`, singular, so the file never matches and the UDF
 never loads. Behind that was a second bug: the definition declares the
 quantile argument as `Array(Float64)` while the generated SQL passes a scalar.
 Renaming the file, fixing the type and running `SYSTEM RELOAD CONFIG` fixed
-p99 queries for good. I'm filing both upstream against Foundry v0.2.14.
+p99 queries for good. I filed both upstream as [SigNoz/foundry#161](https://github.com/SigNoz/foundry/issues/161).
 
 ## What worked, what didn't
 
@@ -195,7 +195,7 @@ should reproduce anywhere.
 Self-hosting SigNoz is twenty minutes of casting containers and two hours of
 spelunking, and the spelunking is where all the learning lives.
 
-Code for brewlog is [here](LINK-YOUR-REPO), SigNoz docs are at
+Code for brewlog is [on GitHub](https://github.com/ankurgupta255/brewlog), SigNoz docs are at
 [signoz.io/docs](https://signoz.io/docs), OpenTelemetry Python at
 [opentelemetry.io](https://opentelemetry.io/docs/languages/python/).
 
