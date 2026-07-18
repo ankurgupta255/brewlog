@@ -132,19 +132,21 @@ That single line ships every ordinary `logging` call as an OTel log record,
 already stamped with the active trace and span IDs. No structured logging
 library, no JSON formatter, nothing.
 
-![Services list showing brew-machine at 7.65% error rate](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/services.png)
+![Services list showing brew-machine at an 8.79% error rate](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/services.png)
+*The SigNoz Services page listing both brewlog services. The columns show p99 latency, error rate and operations per second for the selected window; brew-machine sits at an 8.79% error rate because of the injected machine jams.*
 
 ## The feature I keep coming back to: one click from a 502 to the log line
 
 Here is the workflow that genuinely sold me. Traffic generator running,
-orders flowing, and the Services page shows `brew-machine` sitting at a 7.65%
+orders flowing, and the Services page shows `brew-machine` sitting at an 8.79%
 error rate. I open Traces, filter to errors, and pick a failed `POST /order`.
 The flame graph tells the whole story on one screen: ten spans, two services,
 the request crossing from `brewlog-api` into `brew-machine`, and at the
 bottom a short red `extract` span where the machine jammed. The 500 bubbles
 up to the api's outer span as a 502.
 
-![Flame graph of a failed order, red extract span across two services](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/trace-error-detail.png)
+![Flame graph of a failed order, red extract span across two services](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/trace-error-detail.png)
+*Trace detail for one failed order. The flame graph and the waterfall below it show the request travelling from brewlog-api into brew-machine; the short red extract span is the exact point where the machine jammed, and that 500 propagates up to the root span as a 502.*
 
 From that red span, "related logs" lands me directly on the exact
 `machine jammed while brewing espresso` line, because the trace and span IDs
@@ -162,7 +164,8 @@ app itself, which logs the alert, which then ships to SigNoz as a log. So my
 observability stack now complains about my coffee machine, to my coffee
 machine. There is something oddly satisfying about that.
 
-![Triggered alert firing](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/alerts-triggered.png)
+![Triggered alert in firing state](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/alerts-triggered.png)
+*The Triggered Alerts tab with the failure-rate rule in Firing state, showing its severity and labels about a minute after the jam rate crossed the 5% threshold.*
 
 ## Two more things that bit me
 
@@ -171,12 +174,14 @@ panel showed every single drink at exactly 4.95s. Espresso takes 50
 milliseconds. The cause: OTel's default histogram boundaries start at
 [0, 5, 10, ...], so every sub-second brew falls into the (0, 5] bucket, and
 quantile interpolation just invents ~4.95s out of thin air. The fix is
-`explicit_bucket_boundaries_advisory=[0.025, ..., 3.0]` on the instrument. My
-dashboard still shows the exact moment the fix deployed, a flat 4.95s line
-bending down to reality, with pour_over settling at its true ~1.4s. I feel
-this one chart taught me more about histograms than any documentation has.
+`explicit_bucket_boundaries_advisory=[0.025, ..., 3.0]` on the instrument. After the fix
+the panel finally separates: pour_over settles at its true ~1.4s while every
+other drink stays well under 200ms, where minutes earlier the same panel was
+one flat 4.95s line. I feel this one chart taught me more about histograms
+than any documentation has.
 
-![p99 by drink, before and after fixing bucket boundaries](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/dashboard-brewlog-final.png)
+![Brewlog Overview dashboard with per-drink p99 after the bucket fix](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/dashboard-brewlog.png)
+*The Brewlog Overview dashboard. In the p99 panel, pour_over sits at its true ~1.4s while every other drink stays under 200ms; before the bucket fix this same panel was one flat 4.95s line for all five drinks.*
 
 **And before the buckets could lie to me, the query would not even run.**
 ClickHouse said `Function with name 'histogramQuantile' does not exist`.
