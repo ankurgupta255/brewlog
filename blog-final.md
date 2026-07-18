@@ -132,7 +132,7 @@ That single line ships every ordinary `logging` call as an OTel log record,
 already stamped with the active trace and span IDs. No structured logging
 library, no JSON formatter, nothing.
 
-![Services list showing brew-machine at an 8.79% error rate](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/services.png)
+[![Services list showing brew-machine at an 8.79% error rate](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/services.png)](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/services.png)
 *The SigNoz Services page listing both brewlog services. The columns show p99 latency, error rate and operations per second for the selected window; brew-machine sits at an 8.79% error rate because of the injected machine jams.*
 
 ## The feature I keep coming back to: one click from a 502 to the log line
@@ -145,7 +145,7 @@ the request crossing from `brewlog-api` into `brew-machine`, and at the
 bottom a short red `extract` span where the machine jammed. The 500 bubbles
 up to the api's outer span as a 502.
 
-![Flame graph of a failed order, red extract span across two services](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/trace-error-detail.png)
+[![Flame graph of a failed order, red extract span across two services](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/trace-error-detail.png)](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/trace-error-detail.png)
 *Trace detail for one failed order. The flame graph and the waterfall below it show the request travelling from brewlog-api into brew-machine; the short red extract span is the exact point where the machine jammed, and that 500 propagates up to the root span as a 502.*
 
 From that red span, "related logs" lands me directly on the exact
@@ -164,7 +164,7 @@ app itself, which logs the alert, which then ships to SigNoz as a log. So my
 observability stack now complains about my coffee machine, to my coffee
 machine. There is something oddly satisfying about that.
 
-![Triggered alert in firing state](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/alerts-triggered.png)
+[![Triggered alert in firing state](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/alerts-triggered.png)](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/alerts-triggered.png)
 *The Triggered Alerts tab with the failure-rate rule in Firing state, showing its severity and labels about a minute after the jam rate crossed the 5% threshold.*
 
 ## Two more things that bit me
@@ -180,7 +180,7 @@ other drink stays well under 200ms, where minutes earlier the same panel was
 one flat 4.95s line. I feel this one chart taught me more about histograms
 than any documentation has.
 
-![Brewlog Overview dashboard with per-drink p99 after the bucket fix](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/dashboard-brewlog.png)
+[![Brewlog Overview dashboard with per-drink p99 after the bucket fix](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/dashboard-brewlog.png)](https://raw.githubusercontent.com/ankurgupta255/brewlog/main/shots/hd/dashboard-brewlog.png)
 *The Brewlog Overview dashboard. In the p99 panel, pour_over sits at its true ~1.4s while every other drink stays under 200ms; before the bucket fix this same panel was one flat 4.95s line for all five drinks.*
 
 **And before the buckets could lie to me, the query would not even run.**
